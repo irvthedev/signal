@@ -16,15 +16,15 @@ const PHASE_COLOR: Record<string, string> = {
   PHASE4: "bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300",
 };
 
-export default function TrialFeed({ trials }: { trials: TrialItem[] }) {
-  if (!trials.length) {
+export default function TrialFeed({ trials, loading }: { trials: TrialItem[]; loading?: boolean }) {
+  if (loading || !trials.length) {
     return <p className="text-gray-400 text-sm dark:text-gray-500">Loading trial readouts...</p>;
   }
 
   return (
     <div className="flex flex-col gap-3 overflow-y-auto max-h-[600px] pr-1">
       {trials.slice(0, 40).map((t, i) => (
-        <div key={t.nct_id ?? i} className="bg-white rounded-lg p-3 border border-gray-200 dark:bg-gray-800 dark:border-gray-700">
+        <div key={`${t.nct_id ?? "trial"}-${i}`} className="bg-white rounded-lg p-3 border border-gray-200 dark:bg-gray-800 dark:border-gray-700">
           <div className="flex items-start justify-between gap-2 mb-1">
             <span className="font-mono text-xs text-cyan-600 font-bold dark:text-cyan-400">{t.ticker}</span>
             <span className={`text-xs font-semibold px-1.5 py-0.5 rounded ${PHASE_COLOR[t.phase] ?? "bg-gray-100 text-gray-600 dark:bg-gray-700 dark:text-gray-300"}`}>

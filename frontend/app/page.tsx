@@ -20,22 +20,24 @@ export default function Dashboard() {
   const [pipeline, setPipeline] = useState<Pipeline>({});
   const [news, setNews]         = useState<NewsItem[]>([]);
   const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
-  const [loading, setLoading]   = useState(true);
+  const [stocksLoading, setStocksLoading]     = useState(true);
+  const [trialsLoading, setTrialsLoading]     = useState(true);
+  const [pipelineLoading, setPipelineLoading] = useState(true);
+  const [newsLoading, setNewsLoading]         = useState(true);
   const [tab, setTab]           = useState<Tab>("pipeline");
 
   const refresh = useCallback(async () => {
-    try {
-      const [s, t, p, n] = await Promise.allSettled([
-        getStocks(), getTrials(), getPipeline(), getNews(),
-      ]);
-      if (s.status === "fulfilled") setStocks(s.value);
-      if (t.status === "fulfilled") setTrials(t.value);
-      if (p.status === "fulfilled") setPipeline(p.value);
-      if (n.status === "fulfilled") setNews(n.value);
-      setLastUpdated(new Date());
-    } finally {
-      setLoading(false);
-    }
+    setStocksLoading(true);
+    setTrialsLoading(true);
+    setPipelineLoading(true);
+    setNewsLoading(true);
+    await Promise.allSettled([
+      getStocks().then(setStocks).finally(() => setStocksLoading(false)),
+      getTrials().then(setTrials).finally(() => setTrialsLoading(false)),
+      getPipeline().then(setPipeline).finally(() => setPipelineLoading(false)),
+      getNews().then(setNews).finally(() => setNewsLoading(false)),
+    ]);
+    setLastUpdated(new Date());
   }, []);
 
   useEffect(() => {
@@ -56,7 +58,9 @@ export default function Dashboard() {
           <span className="text-lg font-bold tracking-tight">Signal</span>
         </div>
         <div className="flex items-center gap-3 text-sm text-gray-500 dark:text-gray-400">
-          {loading && <RefreshCw size={14} className="animate-spin text-cyan-500 dark:text-cyan-400" />}
+          {(stocksLoading || trialsLoading || pipelineLoading || newsLoading) && (
+            <RefreshCw size={14} className="animate-spin text-cyan-500 dark:text-cyan-400" />
+          )}
           {lastUpdated && <span>Updated {fmtTime(lastUpdated)}</span>}
           <button
             onClick={refresh}
@@ -74,10 +78,10 @@ export default function Dashboard() {
         {/* Stocks — center */}
         <aside className="col-span-3 border-r border-gray-200 p-4 overflow-y-auto dark:border-gray-800">
           <h2 className="text-xs font-bold uppercase tracking-widest text-gray-400 mb-3 dark:text-gray-500">Stocks</h2>
-          {stocks.length ? (
-            <StockGrid stocks={stocks} />
-          ) : (
+          {stocksLoading ? (
             <p className="text-gray-400 text-sm dark:text-gray-600">Loading...</p>
+          ) : (
+            <StockGrid stocks={stocks} />
           )}
         </aside>
 
@@ -107,9 +111,9 @@ export default function Dashboard() {
           </div>
           <div className="flex-1 p-4 overflow-hidden">
             {tab === "pipeline" ? (
-              <PipelineView pipeline={pipeline} />
+              <PipelineView pipeline={pipeline} loading={pipelineLoading} />
             ) : (
-              <TrialFeed trials={trials} />
+              <TrialFeed trials={trials} loading={trialsLoading} />
             )}
           </div>
         </main>
@@ -117,7 +121,7 @@ export default function Dashboard() {
         {/* News — right */}
         <aside className="col-span-4 p-4 overflow-y-auto">
           <h2 className="text-xs font-bold uppercase tracking-widest text-gray-400 mb-3 dark:text-gray-500">Industry News</h2>
-          <NewsFeed news={news} />
+          <NewsFeed news={news} loading={newsLoading} />
         </aside>
       </div>
 

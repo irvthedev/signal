@@ -18,8 +18,8 @@ function relTime(iso: string | null) {
   return `${Math.floor(h / 24)}d ago`;
 }
 
-export default function NewsFeed({ news }: { news: NewsItem[] }) {
-  if (!news.length) {
+export default function NewsFeed({ news, loading }: { news: NewsItem[]; loading?: boolean }) {
+  if (loading || !news.length) {
     return <p className="text-gray-400 text-sm dark:text-gray-500">Loading news...</p>;
   }
 
@@ -38,7 +38,7 @@ export default function NewsFeed({ news }: { news: NewsItem[] }) {
               {n.source}
             </span>
             <div className="flex items-center gap-1 text-gray-400 dark:text-gray-600">
-              <span className="text-xs">{relTime(n.published)}</span>
+              <span className="text-xs" suppressHydrationWarning>{relTime(n.published)}</span>
               <ExternalLink size={11} className="group-hover:text-gray-600 transition-colors dark:group-hover:text-gray-400" />
             </div>
           </div>

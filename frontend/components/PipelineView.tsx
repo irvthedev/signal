@@ -13,9 +13,9 @@ const PHASE_SHORT: Record<string, string> = {
   PHASE3: "III",
 };
 
-export default function PipelineView({ pipeline }: { pipeline: Pipeline }) {
+export default function PipelineView({ pipeline, loading }: { pipeline: Pipeline; loading?: boolean }) {
   const tickers = Object.keys(pipeline);
-  if (!tickers.length) {
+  if (loading || !tickers.length) {
     return <p className="text-gray-400 text-sm dark:text-gray-500">Loading pipeline data...</p>;
   }
 
