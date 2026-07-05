@@ -30,18 +30,33 @@ dosage/
 
 ## Running locally
 
-### Backend
+### Install dependencies
 
-Requires Python 3.11+.
+**Option A — one-shot script (recommended)**
 
 ```bash
-# From the repo root — create and activate a virtual environment
+./install.sh
+```
+
+Creates `.venv`, installs Python deps, and runs `npm install` in `frontend/`.
+
+**Option B — manual**
+
+Requires Python 3.11+ and Node.js 18+.
+
+```bash
+# Backend
 python3 -m venv .venv
 source .venv/bin/activate
-
-# Install dependencies
 pip install -r backend/requirements.txt
 
+# Frontend
+cd frontend && npm install
+```
+
+### Backend
+
+```bash
 # Start the API server (runs on http://localhost:8000)
 uvicorn main:app --reload --port 8000
 ```
