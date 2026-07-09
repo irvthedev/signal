@@ -19,9 +19,13 @@ log = logging.getLogger(__name__)
 
 app = FastAPI(title="Pharma Watch API")
 
+cors_origins = os.environ.get(
+    "CORS_ORIGINS", "http://localhost:3000,http://127.0.0.1:3000"
+).split(",")
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "http://127.0.0.1:3000"],
+    allow_origins=cors_origins,
     allow_methods=["GET"],
     allow_headers=["*"],
 )
