@@ -20,7 +20,7 @@ export default function PipelineView({ pipeline, loading }: { pipeline: Pipeline
   }
 
   return (
-    <div className="flex flex-col gap-4 overflow-y-auto max-h-[600px] pr-1">
+    <div className="flex flex-col gap-4 overflow-y-auto h-full pr-1">
       {tickers.map(ticker => {
         const entry = pipeline[ticker];
         const trials = entry.active_trials ?? [];

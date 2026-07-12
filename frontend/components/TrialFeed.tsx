@@ -22,7 +22,7 @@ export default function TrialFeed({ trials, loading }: { trials: TrialItem[]; lo
   }
 
   return (
-    <div className="flex flex-col gap-3 overflow-y-auto max-h-[600px] pr-1">
+    <div className="flex flex-col gap-3 overflow-y-auto h-full pr-1">
       {trials.slice(0, 40).map((t, i) => (
         <div key={`${t.nct_id ?? "trial"}-${i}`} className="bg-white rounded-lg p-3 border border-gray-200 dark:bg-gray-800 dark:border-gray-700">
           <div className="flex items-start justify-between gap-2 mb-1">

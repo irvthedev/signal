@@ -52,7 +52,7 @@ export default function Dashboard() {
   return (
     <div className="min-h-screen bg-gray-50 text-gray-900 dark:bg-gray-900 dark:text-white">
       {/* Header */}
-      <header className="border-b border-gray-200 px-6 py-3 flex items-center justify-between dark:border-gray-800">
+      <header className="border-b border-gray-200 px-4 sm:px-6 py-3 flex flex-wrap items-center justify-between gap-2 dark:border-gray-800">
         <div className="flex items-center gap-2">
           <Activity size={20} className="text-cyan-500 dark:text-cyan-400" />
           <span className="text-lg font-bold tracking-tight">Signal</span>
@@ -61,7 +61,7 @@ export default function Dashboard() {
           {(stocksLoading || trialsLoading || pipelineLoading || newsLoading) && (
             <RefreshCw size={14} className="animate-spin text-cyan-500 dark:text-cyan-400" />
           )}
-          {lastUpdated && <span>Updated {fmtTime(lastUpdated)}</span>}
+          {lastUpdated && <span className="hidden sm:inline">Updated {fmtTime(lastUpdated)}</span>}
           <button
             onClick={refresh}
             className="flex items-center gap-1 bg-gray-100 hover:bg-gray-200 px-3 py-1.5 rounded-md transition-colors text-xs dark:bg-gray-800 dark:hover:bg-gray-700"
@@ -72,11 +72,11 @@ export default function Dashboard() {
         </div>
       </header>
 
-      {/* Main grid — pipeline/trials | stocks | news */}
-      <div className="grid grid-cols-12 gap-0 h-[calc(100vh-56px)]">
+      {/* Main grid — stacks to a single column on mobile, 12-col grid from md up */}
+      <div className="grid grid-cols-1 md:grid-cols-12 gap-0 md:h-[calc(100vh-56px)]">
 
-        {/* Stocks — center */}
-        <aside className="col-span-3 border-r border-gray-200 p-4 overflow-y-auto dark:border-gray-800">
+        {/* Stocks — left */}
+        <aside className="col-span-1 md:col-span-3 border-b md:border-b-0 md:border-r border-gray-200 p-4 h-[70vh] md:h-full overflow-y-auto dark:border-gray-800">
           <h2 className="text-xs font-bold uppercase tracking-widest text-gray-400 mb-3 dark:text-gray-500">Stocks</h2>
           {stocksLoading ? (
             <p className="text-gray-400 text-sm dark:text-gray-600">Loading...</p>
@@ -85,8 +85,8 @@ export default function Dashboard() {
           )}
         </aside>
 
-        {/* Pipeline / Trials — left */}
-        <main className="col-span-5 border-r border-gray-200 flex flex-col dark:border-gray-800">
+        {/* Pipeline / Trials — middle */}
+        <main className="col-span-1 md:col-span-5 border-b md:border-b-0 md:border-r border-gray-200 flex flex-col h-[70vh] md:h-full dark:border-gray-800">
           <div className="flex border-b border-gray-200 dark:border-gray-800">
             <button
               onClick={() => setTab("pipeline")}
@@ -119,9 +119,11 @@ export default function Dashboard() {
         </main>
 
         {/* News — right */}
-        <aside className="col-span-4 p-4 overflow-y-auto">
-          <h2 className="text-xs font-bold uppercase tracking-widest text-gray-400 mb-3 dark:text-gray-500">Industry News</h2>
-          <NewsFeed news={news} loading={newsLoading} />
+        <aside className="col-span-1 md:col-span-4 flex flex-col h-[70vh] md:h-full overflow-hidden">
+          <h2 className="text-xs font-bold uppercase tracking-widest text-gray-400 px-4 pt-4 mb-3 dark:text-gray-500">Industry News</h2>
+          <div className="flex-1 px-4 pb-4 overflow-hidden">
+            <NewsFeed news={news} loading={newsLoading} />
+          </div>
         </aside>
       </div>
 

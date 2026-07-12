@@ -24,7 +24,7 @@ export default function NewsFeed({ news, loading }: { news: NewsItem[]; loading?
   }
 
   return (
-    <div className="flex flex-col gap-3 overflow-y-auto max-h-[600px] pr-1">
+    <div className="flex flex-col gap-3 overflow-y-auto h-full pr-1">
       {news.map((n, i) => (
         <a
           key={n.url ?? i}
