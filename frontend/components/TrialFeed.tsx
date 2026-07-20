@@ -16,9 +16,20 @@ const PHASE_COLOR: Record<string, string> = {
   PHASE4: "bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300",
 };
 
-export default function TrialFeed({ trials, loading }: { trials: TrialItem[]; loading?: boolean }) {
-  if (loading || !trials.length) {
+export default function TrialFeed({
+  trials,
+  loading,
+  emptyMessage,
+}: {
+  trials: TrialItem[];
+  loading?: boolean;
+  emptyMessage?: string;
+}) {
+  if (loading) {
     return <p className="text-gray-400 text-sm dark:text-gray-500">Loading trial readouts...</p>;
+  }
+  if (!trials.length) {
+    return <p className="text-gray-400 text-sm dark:text-gray-500">{emptyMessage ?? "No trial readouts."}</p>;
   }
 
   return (

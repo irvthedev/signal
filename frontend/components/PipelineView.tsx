@@ -13,10 +13,21 @@ const PHASE_SHORT: Record<string, string> = {
   PHASE3: "III",
 };
 
-export default function PipelineView({ pipeline, loading }: { pipeline: Pipeline; loading?: boolean }) {
+export default function PipelineView({
+  pipeline,
+  loading,
+  emptyMessage,
+}: {
+  pipeline: Pipeline;
+  loading?: boolean;
+  emptyMessage?: string;
+}) {
   const tickers = Object.keys(pipeline);
-  if (loading || !tickers.length) {
+  if (loading) {
     return <p className="text-gray-400 text-sm dark:text-gray-500">Loading pipeline data...</p>;
+  }
+  if (!tickers.length) {
+    return <p className="text-gray-400 text-sm dark:text-gray-500">{emptyMessage ?? "No pipeline data."}</p>;
   }
 
   return (

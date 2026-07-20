@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Pharma Watch",
+  title: "Signal",
   description: "Real-time pharmaceutical intelligence dashboard",
 };
 

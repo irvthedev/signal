@@ -40,20 +40,28 @@ export default function StockGrid({ stocks }: { stocks: StockItem[] }) {
   const top     = stocks.filter(s => s.category === "top_pharma");
   const biotech = stocks.filter(s => s.category === "biotech");
 
+  if (!top.length && !biotech.length) {
+    return <p className="text-gray-400 text-sm dark:text-gray-500">No matching companies.</p>;
+  }
+
   return (
     <div className="flex flex-col gap-4">
-      <div>
-        <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2 dark:text-gray-500">Top Pharma</h3>
-        <div className="grid grid-cols-2 gap-2">
-          {top.map(s => <StockCard key={s.ticker} s={s} />)}
+      {top.length > 0 && (
+        <div>
+          <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2 dark:text-gray-500">Top Pharma</h3>
+          <div className="grid grid-cols-2 gap-2">
+            {top.map(s => <StockCard key={s.ticker} s={s} />)}
+          </div>
         </div>
-      </div>
-      <div>
-        <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2 dark:text-gray-500">Biotech</h3>
-        <div className="grid grid-cols-2 gap-2">
-          {biotech.map(s => <StockCard key={s.ticker} s={s} />)}
+      )}
+      {biotech.length > 0 && (
+        <div>
+          <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2 dark:text-gray-500">Biotech</h3>
+          <div className="grid grid-cols-2 gap-2">
+            {biotech.map(s => <StockCard key={s.ticker} s={s} />)}
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }

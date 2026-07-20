@@ -18,9 +18,20 @@ function relTime(iso: string | null) {
   return `${Math.floor(h / 24)}d ago`;
 }
 
-export default function NewsFeed({ news, loading }: { news: NewsItem[]; loading?: boolean }) {
-  if (loading || !news.length) {
+export default function NewsFeed({
+  news,
+  loading,
+  emptyMessage,
+}: {
+  news: NewsItem[];
+  loading?: boolean;
+  emptyMessage?: string;
+}) {
+  if (loading) {
     return <p className="text-gray-400 text-sm dark:text-gray-500">Loading news...</p>;
+  }
+  if (!news.length) {
+    return <p className="text-gray-400 text-sm dark:text-gray-500">{emptyMessage ?? "No news."}</p>;
   }
 
   return (
